@@ -2,7 +2,7 @@ FROM alpine:latest AS build
 
 WORKDIR /app
 
-RUN apk --update add build-base git cmake boost boost-dev boost-static
+RUN apk --update add build-base git cmake boost boost-dev
 
 COPY CMakeLists.txt CMakeLists.txt
 COPY main.cpp main.cpp

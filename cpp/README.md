@@ -1,6 +1,6 @@
 # Dockerized Cats API Written in C++
 
-For simplicity purposes this is an in memory go CRUD API for cats.
+For simplicity purposes this is an in memory C++ CRUD API for cats.
 
 ## Build
 

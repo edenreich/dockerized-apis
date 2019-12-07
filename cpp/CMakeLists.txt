@@ -5,20 +5,37 @@ project(api)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
+set(VENDOR_DEPENDENCIES_DIR ${CMAKE_BINARY_DIR}/_deps)
 
-include(ExternalProject)
-ExternalProject_Add(httplib
-    PREFIX httplib
-    GIT_REPOSITORY https://github.com/yhirose/cpp-httplib
-    GIT_TAG v0.3.0
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+if(NOT EXISTS "${CMAKE_HOME_DIRECTORY}/cmake/CPM.cmake")
+  file(DOWNLOAD https://raw.githubusercontent.com/TheLartians/CPM.cmake/master/cmake/CPM.cmake "${CMAKE_BINARY_DIR}/cmake/CPM.cmake")
+endif()
+
+include(${CMAKE_BINARY_DIR}/cmake/CPM.cmake)
+
+CPMAddPackage(
+    NAME httplib
+    GITHUB_REPOSITORY yhirose/cpp-httplib
+    VERSION 0.3.0
+    DOWNLOAD_ONLY True
+)
+
+CPMAddPackage(
+    NAME nlohmann_json
+    GITHUB_REPOSITORY nlohmann/json
+    VERSION 3.2.0
+    OPTIONS
+        "JSON_BuildTests OFF"
+)
+
+include_directories(
+    ${VENDOR_DEPENDENCIES_DIR}/httplib-src
+    ${VENDOR_DEPENDENCIES_DIR}/nlohmann_json-src/include
 )
 
 find_package(Threads REQUIRED)
 find_package(Boost 1.67.0 REQUIRED COMPONENTS system)
-
-include_directories(${EXTERNAL_INSTALL_LOCATION}/include/httplib)
+find_package(nlohmann_json QUIET)
 
 add_executable(${CMAKE_PROJECT_NAME} main.cpp)
-target_link_libraries(${CMAKE_PROJECT_NAME} Threads::Threads Boost::system)
+target_link_libraries(${CMAKE_PROJECT_NAME} Threads::Threads Boost::system nlohmann_json::nlohmann_json)

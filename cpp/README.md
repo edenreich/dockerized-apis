@@ -4,7 +4,7 @@ For simplicity purposes this is an in memory go CRUD API for cats.
 
 ## Build
 
-From go directory run `docker build -t cpp-api .` (12.5MB)
+From go directory run `docker build -t cpp-api .` (12.8MB)
 
 ## Start
 

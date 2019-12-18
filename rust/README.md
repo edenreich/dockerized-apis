@@ -4,7 +4,7 @@ For simplicity purposes this is an in memory Rust CRUD API for cats.
 
 ## Build
 
-From the current directory run `docker build -t rust-api .` (8.46MB)
+From the current directory run `docker build -t rust-api .` (10.9MB)
 
 ## Start
 
